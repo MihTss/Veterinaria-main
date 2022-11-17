@@ -65,8 +65,10 @@ function cadastrarPessoa(event)
 
 // #######################################################  ATUALIZAR PESSOAS #######################################################
 
-function atualizarPessoa()
+function atualizarPessoa(event)
 {
+	event.preventDefault();
+
 	if (document.getElementById('isvet').value == 'true')
 	{
 		var valorvet = true;
@@ -82,10 +84,11 @@ function atualizarPessoa()
 		'email':       document.getElementById('email').value,
 		'isVeterinario': valorvet,
 	};
+	console.log(body);
 	
 	fetch(url + "pessoa/" + id,
 	{
-		'method': 'put',
+		'method': 'PUT',
 		'redirect': 'follow',
 		'headers':
 		{

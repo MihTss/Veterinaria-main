@@ -63,8 +63,13 @@ namespace Trabalho
 			var connectionString = builder.Configuration.GetConnectionString("Base") ?? "Data Source=base.db";
 			builder.Services.AddSqlite<Base>(connectionString);
 			
+			builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod()));
+
+
 			var app = builder.Build();
 			
+			app.UseCors();
+
             // Cadastrar Pessoa
 			app.MapPost("/pessoa", (Base db, Pessoa pessoa) =>
 			{
@@ -107,10 +112,13 @@ namespace Trabalho
                 {
                     vet.nome = pessoa.nome;
                     vet.telefone = pessoa.telefone;
+				    vet.email = pessoa.email;
+					vet.isVeterinario = pessoa.isVeterinario;
+
                     db.SaveChanges();
-                    return "Pessoa atualizado";
+                    return "Pessoa atualizada";
                 } else {
-                    return "Pessoa não encontrado";
+                    return "Pessoa não encontrada";
                 }
 			});
 
