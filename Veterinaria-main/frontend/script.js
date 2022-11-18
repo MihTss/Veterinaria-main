@@ -199,10 +199,17 @@ function listarPessoas(event)
 			divEmail.value = usuario.email
 			divUsuario.appendChild(divEmail)
 
+			//pega o telefone do usuario
 			let divTelefone = document.createElement('input')
 			divTelefone.placeholder = 'Telefone'
 			divTelefone.value = usuario.telefone
 			divUsuario.appendChild(divTelefone)
+
+			//se o usuario é dono ou veterinario 
+			let divTipo = document.createElement('input')
+			divTipo.placeholder = 'isvet'
+			divTipo.value =  usuario.isVeterinario ? "VETERINARIO" : "DONO"
+			divUsuario.appendChild(divTipo)
 			
 			//insere a div do usuario na div com a lista de usuarios
 			listaUsuarios.appendChild(divUsuario)
@@ -566,7 +573,7 @@ function removerAgendamento(event)
 }
 
 
-// ####################################################### LISTAR PACIENTES #######################################################
+// ####################################################### LISTAR AGENDAMENTOS #######################################################
 
 function listarAgendamentos(event)
 {
