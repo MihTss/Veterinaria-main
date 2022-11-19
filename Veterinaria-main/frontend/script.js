@@ -204,7 +204,7 @@ function listarPessoas(event)
 			divTelefone.placeholder = 'Telefone'
 			divTelefone.value = usuario.telefone
 			divUsuario.appendChild(divTelefone)
-
+			
 			//se o usuario é dono ou veterinario 
 			let divTipo = document.createElement('input')
 			divTipo.placeholder = 'isvet'
@@ -407,6 +407,21 @@ function listarPacientes(event)
 			divEspecie.placeholder = 'Especie'
 			divEspecie.value = usuario.especie
 			divUsuario.appendChild(divEspecie)
+
+			//dono do animal
+			let divIdDono = document.createElement('input')
+			fetch(url + 'pessoa/' + usuario.idDono,
+			{
+				'method': 'GET',
+				'redirect': 'follow'
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data)
+					divIdDono.placeholder = 'idDono'
+					divIdDono.value = 'Dono: ' + data.nome + '  ' + 'Cód: ' + data.id
+					divUsuario.appendChild(divIdDono)
+				});
 			
 			//insere a div do usuario na div com a lista de usuarios
 			listaUsuarios.appendChild(divUsuario)
@@ -585,35 +600,53 @@ function listarAgendamentos(event)
 		'redirect': 'follow'
 	})
 	.then(response => response.json())
-	.then((usuarios) =>
+	.then((agendamentos) =>
 	{
-		console.log(usuarios);
+		console.log(agendamentos);
 		//pega div que vai conter a lista de agendamentos
-		let listaUsuarios = document.getElementById('lista-agendamentos')
+		let listaAgendamentos = document.getElementById('lista-agendamentos')
 		
 		//preenche div com usuarios recebidos do GET
-		for(let usuario of usuarios)
+		for(let agendamento of agendamentos)
 		{
 			//cria div para as informacoes de um usuario
-			let divUsuario = document.createElement('div')
-			divUsuario.setAttribute('class', 'form')
+			let divAgendamento = document.createElement('div')
+			divAgendamento.setAttribute('class', 'form')
 			
 			let divIdPaciente = document.createElement('input')
-			divIdPaciente.placeholder = 'idPaciente'
-			divIdPaciente.value = usuario.idPaciente
-			divUsuario.appendChild(divIdPaciente)
+			fetch(url + 'paciente/' + agendamento.idPaciente,
+			{
+				'method': 'GET',
+				'redirect': 'follow'
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data)
+					divIdPaciente.placeholder = 'idPaciente'
+					divIdPaciente.value = 'Paciente: ' + data.nome + '  ' + 'Cód: ' + data.id
+					divAgendamento.appendChild(divIdPaciente)
+				});
 			
 			let divIdVeterinario = document.createElement('input')
-			divIdVeterinario.placeholder = 'idVeterinario'
-			divIdVeterinario.value = usuario.idVeterinario
-			divUsuario.appendChild(divIdVeterinario)
+			fetch(url + 'pessoa/' + agendamento.idVeterinario,
+			{
+				'method': 'GET',
+				'redirect': 'follow'
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					console.log(data)
+					divIdVeterinario.placeholder = 'idVeterinario'
+					divIdVeterinario.value = 'Veterinário ' + data.nome
+					divAgendamento.appendChild(divIdVeterinario)
+				});
 
 			let divDataHora = document.createElement('input')
 			divDataHora.placeholder = 'dataHora'
-			divDataHora.value = usuario.dataHora
-			divUsuario.appendChild(divDataHora)
+			divDataHora.value = agendamento.dataHora
+			divAgendamento.appendChild(divDataHora)
 			
-			listaUsuarios.appendChild(divUsuario)
+			listaAgendamentos.appendChild(divAgendamento)
 		}
 	})
 	.catch((error) => {
